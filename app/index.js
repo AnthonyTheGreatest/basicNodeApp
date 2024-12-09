@@ -1,13 +1,13 @@
 import express from 'express';
-import mysql from 'mysql/promise';
+import mysql from 'mysql2/promise';
 
 const app = express();
 const port = process.env.APP_PORT || 3000;
 const dbConfig = {
     host: process.env.MYSQL_HOST || 'localhost',
-    user: process.env.MYSQL_USER || 'root',
-    password: process.env.MYSQL_ROOT_PASSWORD || 'password',
-    database: process.env.MYSQL_DATABASE || 'testdb',
+    user: 'root',
+    password: process.env.MYSQL_ROOT_PASSWORD || 'mysql',
+    database:'mysql'
   };
 const pool = mysql.createPool(dbConfig);
 
@@ -20,7 +20,7 @@ if (process.env.NODE_ENV === 'production') {
 
 app.get('/', async (req, res) =>  {
     try {
-        const [rows] = await pool.query('SELECT * FROM users');
+        const [rows] = await pool.query('SELECT * FROM user');
         res.json(rows);        
     } catch (err) {
         res.status(500).json({ error: err.message });
